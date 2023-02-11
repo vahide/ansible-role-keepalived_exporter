@@ -7,7 +7,7 @@
 
 ## Description
 
-Deploy [keepalived_exporter](https://github.com/prometheus/keepalived_exporter) using ansible.
+Deploy [keepalived_exporter](https://github.com/gen2brain/keepalived_exporter) using ansible.
 
 ## Requirements
 

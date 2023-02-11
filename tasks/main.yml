@@ -1,0 +1,36 @@
+---
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution_file_variety | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - keepalived_exporter_install
+    - keepalived_exporter_configure
+    - keepalived_exporter_run
+
+- import_tasks: preflight.yml
+  tags:
+    - keepalived_exporter_install
+    - keepalived_exporter_configure
+    - keepalived_exporter_run
+
+- import_tasks: install.yml
+  become: true
+  tags:
+    - keepalived_exporter_install
+
+- import_tasks: configure.yml
+  become: true
+  tags:
+    - keepalived_exporter_configure
+
+- name: Ensure keepalived_exporter is enabled on boot
+  become: true
+  systemd:
+    daemon_reload: true
+    name: keepalived_exporter
+    enabled: true
+  tags:
+    - keepalived_exporter_run
